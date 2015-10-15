@@ -8,9 +8,11 @@ fours.o: fours.cpp
 	g++ -c -o fours.o fours.cpp
 numsys.o: numsys.cpp
 	g++ -c -o numsys.o numsys.cpp
+evaluate.o: evaluate.cpp
+	g++ -c -o evaluate.o evaluate.cpp
 	
-MathCalc.exe: main.o linar.o fours.o numsys.o
-	g++ -o MathCalc.exe main.o linar.o fours.o numsys.o
+MathCalc.exe: main.o linar.o fours.o numsys.o evaluate.o
+	g++ -o MathCalc.exe main.o linar.o fours.o numsys.o evaluate.o
 
 exec: MathCalc.exe
 	./MathCalc.exe

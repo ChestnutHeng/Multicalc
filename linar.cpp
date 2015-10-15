@@ -71,7 +71,7 @@ void Box::inputbox()
 
 void Box::printbox()
 {
-	cout << ">>>Display your Box:" << endl <<endl;
+	cout << "Display your Box:" << endl <<endl;
 	for (int i = 0; i < this->m; ++i)
 	{
 		for(int j = 0; j < this->n; ++j)
@@ -192,6 +192,7 @@ void Linar()
           for(int i = 0; i < level - 1; ++i)
               box2 = box2 * box1;
           box2.printbox();
+          continue;
       }
       Box box2 (createbox());
       if(op_str == "+")

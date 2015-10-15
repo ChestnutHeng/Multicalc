@@ -68,18 +68,18 @@ void Numsys()
 
     do
     {
-        cout << "Input number and R1:" ;
+        cout << ">>>Input number and R1:" ;
  		cin >> former;
  		if(former == "q") break;
         cin >> r1;
         if (r1 == 0) {
-        	cout << "R1 shouldn't be 0." << endl;
+        	cout << "Error:R1 shouldn't be 0." << endl;
         	continue;
         }
         cout << "To R2:";
         cin >> r2;
         if (r2 == 0) {
-        	cout << "R2 shouldn't be 0." << endl;
+        	cout << "Error:R2 shouldn't be 0." << endl;
         	continue;
         }
         else if(r2 ==  10){

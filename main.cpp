@@ -2,19 +2,18 @@
 #include <string>
 
 #include "main.h"
-
+#include "Stack.h"
 
 using namespace std;
 
-// double fourans(double a, double b,string str);
-// int stringconvert(string str);
 
 int main()
 {
     string str;
+
     while(true)
     {
-        cout << ">>>Input a command:(Linar,Numsys,q):";
+        cout << ">>>Input a command:(Calc,Linar,Numsys,q):";
         cin >> str ;
         if(str == "q") {
             break;
@@ -25,9 +24,11 @@ int main()
         else if((str == "numsys") || (str == "Numsys")) {
             Numsys();
         }
+        else if(str == "Calc" || str == "calc"){
+            expression_calc();
+        }
         else {cout << "Error input." << endl;}
     }
     return 0;
 }
-
 
