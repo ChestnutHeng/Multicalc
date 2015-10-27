@@ -59,6 +59,7 @@ void Stack<T>::shrink(){
 
 template <typename T>
 void Stack<T>::push(T const&e){
+	expand();
 	_elem[_size++] = e;
 }
 
