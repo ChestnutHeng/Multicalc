@@ -4,6 +4,11 @@
 #include "Stack.h"
 
 #define N_OPTR 9
+#define VERIFY(_STACK_) {\
+    if (_STACK_.empty()) {\
+        return false;\
+    }\
+}
 
 using namespace std;
 
@@ -21,13 +26,18 @@ const char pri[N_OPTR][N_OPTR] = {
 }; //    +,-,*,/,^,!,(,),\0
 
 bool isdigit(char s){
-    if((s <='9' && s >= '0') ||s == '.')
+    if((s <='9' && s >= '0'))
         return true;
     else return false;
 }
 
-int power(int a,int b){
-    int sum = 1;
+float power(int a,int b){
+    float sum = 1;
+    if(b < 0){
+       while((b++) < 0)
+        sum /= a; 
+        return sum;
+    }
     while((b--) > 0)
         sum *= a;
     return sum;
@@ -39,6 +49,14 @@ char * readNumber(char *s,Stack <float> &num){
     while(isdigit(*(++s))){
         new_num = new_num * 10;
         new_num += (*s - 48);
+    }
+    if(*s == '.') {
+        int i = -1;
+        while(isdigit(*(++s))){
+            cout << "ff";
+            new_num += (*s - 48) * power(10,i);
+            i--;
+        }
     }
     num.push(new_num);
     return s;
@@ -136,33 +154,46 @@ char orderBetween(char s1,char s2){
     return pri[raw][col];
 }
 
-float evaluate(char *S){
+bool evaluate(char *S, float *result){
     Stack <float> opnd;
     Stack <char> optr;
+    char *origin = S;
     optr.push('\0');
     while(!optr.empty()){
         if(isdigit(*S)){
             S = readNumber(S,opnd);
         }else{
+            if (*S == '-') {
+                if (S == origin) {
+                    opnd.push(0);
+                } else if (S[-1] == '(') {
+                    opnd.push(0);
+                }
+            }
             switch(orderBetween(optr.top(),*S)){
                 case '>':
-                {
-                    char op = optr.pop();
-                    if('!' == op){
-                        float pOpnd = opnd.pop();
-                        opnd.push(calcu(op,pOpnd));
-                    }else{
-                        float pOpnd2 = opnd.pop();
-                        float pOpnd1 = opnd.pop();
-                        opnd.push(calcu(pOpnd1,op,pOpnd2));
+                    {
+                        VERIFY(optr);
+                        char op = optr.pop();
+                        if('!' == op){
+                            float pOpnd = opnd.pop();
+                            VERIFY(opnd);
+                            opnd.push(calcu(op,pOpnd));
+                        }else{
+                            VERIFY(opnd);
+                            float pOpnd2 = opnd.pop();
+                            VERIFY(opnd);
+                            float pOpnd1 = opnd.pop();
+                            opnd.push(calcu(pOpnd1,op,pOpnd2));
+                        }
+                        break;
                     }
-                }
-                break;
                 case '<':
                     optr.push(*S);
                     S++;
                     break;
                 case '=':
+                    VERIFY(optr);
                     optr.pop();
                     S++;
                     break;
@@ -170,7 +201,8 @@ float evaluate(char *S){
         }
 
     }
-    return opnd.pop();
+    *result = opnd.pop();
+    return true;
 }
 
 void expression_calc(){
@@ -180,6 +212,11 @@ void expression_calc(){
         cout << ">>>Input your expression:";
         scanf("%s",exp);
         if (exp[0] == 'q') return;
-        cout << "Answer: " << evaluate(exp) << endl;
+        float output;
+        if (evaluate(exp, &output)) {
+            cout << "Answer: " << output << endl;
+        } else {
+            cout << "Syntax error." << endl;
+        }
     }
 }
